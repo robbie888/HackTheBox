@@ -41,6 +41,8 @@ Looks like we have SQL credentials here: sql_svc M3g4c0rp123
 
 ![f7a00c8f5fcd4292b63a9f149a4b2245](https://user-images.githubusercontent.com/60744763/130185412-bd02bca1-3bca-4b39-982a-4f0d1a0efb46.png)
 
+## Exploit
+
 I'll also check metasploit for that vulnerability we got from nmap.
 
 ![b7ccc35136994f97a6aaceabd68f1752](https://user-images.githubusercontent.com/60744763/130185433-fbb38d6e-03a2-4b40-bf34-1e785631d0f9.png)
@@ -65,6 +67,8 @@ So that worked out better, now I have a sql shell
 
 I'll research how to get a cmd prompt from here.
 
+## Flag 1
+
 So using the xp_cmdshell option in this tool I've been able to start navigating the system, so will hunt for the first flag.
 
 ![fb740e9198fb47abacfa6cf85977c682](https://user-images.githubusercontent.com/60744763/130185510-8ab0eff5-780a-4a34-8d19-b7f777b9fef7.png)
@@ -72,6 +76,8 @@ So using the xp_cmdshell option in this tool I've been able to start navigating 
 Found it!
 
 ![bed743289e5e4e36b19ab03a424eb074](https://user-images.githubusercontent.com/60744763/130185539-64ddc76d-eb04-40ca-89e2-f816f48ff95a.png)
+
+## Privilege Escalation
 
 Now to find a way for privilege escalate. I'll try to get a reverse shell first.
 
@@ -115,6 +121,8 @@ After some hunting I found the admin's password in the sql_svc user's powershell
 ![3cf147a818ea4c268154f37fdfc73b6a](https://user-images.githubusercontent.com/60744763/130185716-84be74a0-d7dd-4d8f-91c8-32064ea86a0a.png)
 
 administrator MEGACORP_4dm1n!!
+
+## Flag 2
 
 I'll try and run a command prompt as admin now.
 
